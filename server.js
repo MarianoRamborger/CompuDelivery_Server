@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3000
+let port = process.env.PORT
 const cors = require('cors')
 const bodyParser = require('body-parser')
 let nodemailer = require('nodemailer')
@@ -12,9 +12,11 @@ app.use(cors());
 
 app.post ('/newsletter', (req, res) => {
 
+  
   console.log(req.body) 
   res.send(req.body)
 
+  if (req.body.name != null && req.body.email != null) { 
 
     let sender = nodemailer.createTransport({
 
@@ -43,6 +45,8 @@ app.post ('/newsletter', (req, res) => {
         }
 
     });
+
+  }
 } )
 
 
@@ -51,6 +55,7 @@ app.post ('/newsletter', (req, res) => {
 app.get('/', (req, res) => res.send('Hello World2222!'))
 
 
-
-
+if (port == null || port == "") {
+  port = 8000;
+}
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
